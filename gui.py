@@ -25,7 +25,7 @@ import os
 import cv2
 import numpy as np
 from PIL import Image, ImageTk
-from wordcloud import WordCloud
+# from wordcloud import WordCloud
 from random import Random
 import keyboard
 import threading
@@ -241,15 +241,15 @@ class main_window(tk.Tk):
         self.table.heading("one", text="Total %", anchor=tk.W)
 
         # The live updated summary of emotions over time.
-        self.fWordcloud = tk.LabelFrame(self)
-        self.fWordcloud.place(relx=0.0, rely=0.5, relheight=0.5, relwidth=0.5)
-        self.fWordcloud.configure(relief='groove')
-        self.fWordcloud.configure(font=('Bahnschrift', 12))
-        self.fWordcloud.configure(foreground="black")
-        self.fWordcloud.configure(background="#ffffff")
-        self.fWordcloud.configure(highlightbackground="#d9d9d9")
-        self.fWordcloud.configure(highlightcolor="black")
-        self.fWordcloud.configure(text='''Wordcloud''')
+        # self.fWordcloud = tk.LabelFrame(self)
+        # self.fWordcloud.place(relx=0.0, rely=0.5, relheight=0.5, relwidth=0.5)
+        # self.fWordcloud.configure(relief='groove')
+        # self.fWordcloud.configure(font=('Bahnschrift', 12))
+        # self.fWordcloud.configure(foreground="black")
+        # self.fWordcloud.configure(background="#ffffff")
+        # self.fWordcloud.configure(highlightbackground="#d9d9d9")
+        # self.fWordcloud.configure(highlightcolor="black")
+        # self.fWordcloud.configure(text='''Wordcloud''')
 
         # Previous logs section
         self.fLogs = tk.LabelFrame(self)
@@ -450,9 +450,9 @@ class main_window(tk.Tk):
         else:
             self.cancel = self.Topbar.after(3000, self.check_if_loading)
 
-    def setWordcloudColors(self, word, font_size, position, orientation, random_state=None, **kwargs):
-        '''Returns the HSL color value from dict 'hsl' for WordCloud.'''
-        return shared.hsl[word]
+    # def setWordcloudColors(self, word, font_size, position, orientation, random_state=None, **kwargs):
+    #     '''Returns the HSL color value from dict 'hsl' for WordCloud.'''
+    #     return shared.hsl[word]
 
     def create_matplotlib_figures(self):
         # It is more efficient for some reason to setup the axes here, than to use FuncAnimation's "init_func" way.
@@ -472,11 +472,11 @@ class main_window(tk.Tk):
         self.ani_bar = animation.FuncAnimation(fig=self.bar_fig, func=self.update_bar, interval=200)
 
         # Wordcloud
-        canvas = FigureCanvasTkAgg(self.cloud_fig, self.fWordcloud)
-        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        canvas.draw()
+        # canvas = FigureCanvasTkAgg(self.cloud_fig, self.fWordcloud)
+        # canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        # canvas.draw()
         # Create the animation to refresh the word cloud.
-        self.ani_cloud = animation.FuncAnimation(fig=self.cloud_fig, func=self.update_word_cloud, interval=1000)
+        # self.ani_cloud = animation.FuncAnimation(fig=self.cloud_fig, func=self.update_word_cloud, interval=1000)
 
     def update_bar(self, i):
         if shared.system_state == shared.State.ACTIVE:
@@ -492,20 +492,20 @@ class main_window(tk.Tk):
             shared.reset()
             self.update_table(reset=True)
 
-    def update_word_cloud(self, i):
-        if shared.system_state == shared.State.ACTIVE:
-            emotion_freq = {}
-            for i, val in shared.emotion_dict.items():  # Probably not the best practice...
-                if val != 'Neutral':
-                    emotion_freq[val] = shared.total_predictions[i] + 1  # Avoid problems with everything being 0
-            wordcloud = WordCloud(max_font_size=30, background_color="white",
-                                  color_func=self.setWordcloudColors, prefer_horizontal=1.0)
-
-            wordcloud.random_state = Random(1)  # Fix the seed so that words don't jump around.
-            wordcloud.fit_words(emotion_freq)
-
-            self.cloud_ax.imshow(wordcloud, interpolation='bilinear')
-            self.cloud_ax.axis('off')
+    # def update_word_cloud(self, i):
+    #     if shared.system_state == shared.State.ACTIVE:
+    #         emotion_freq = {}
+    #         for i, val in shared.emotion_dict.items():  # Probably not the best practice...
+    #             if val != 'Neutral':
+    #                 emotion_freq[val] = shared.total_predictions[i] + 1  # Avoid problems with everything being 0
+    #         wordcloud = WordCloud(max_font_size=30, background_color="white",
+    #                               color_func=self.setWordcloudColors, prefer_horizontal=1.0, stopwords={})
+    #
+    #         wordcloud.random_state = Random(1)  # Fix the seed so that words don't jump around.
+    #         wordcloud.fit_words(emotion_freq)
+    #
+    #         self.cloud_ax.imshow(wordcloud, interpolation='bilinear')
+    #         self.cloud_ax.axis('off')w
 
     def init_table(self):
         # Confirmed working.

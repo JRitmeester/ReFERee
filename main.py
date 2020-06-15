@@ -17,6 +17,7 @@ import shared
 
 
 if __name__ == "__main__":
+    print('Starting...')
     shared.init()
     shared.logger = myLogger.Logger()
     gui = GUI()
