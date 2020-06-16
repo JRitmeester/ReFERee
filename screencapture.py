@@ -3,7 +3,8 @@
 import os
 import mss
 from pathlib import Path
-
+from PIL import Image
+import PIL.ImageGrab
 
 class Screencapture:
 
@@ -27,13 +28,15 @@ class Screencapture:
             print("{} -> {}".format(fname, newfile))
             os.rename(fname, newfile)
 
-    def capture(self, img_name):
-        '''Takes a screenshot of monitor 1 and stores it in self.path. Each screenshot takes roughly 350 ms.
-        Returns absolute path of image.'''
+    def capture(self, img_name, mode='jpg'):
+        '''Takes a screenshot of monitor 1 and stores it in a folder to be used in the session screen.
+        Returns absolute path of image. Can make JPG or PNG screenshots.'''
         try:
-            with mss.mss() as sct:
-                filename = sct.shot(output="{}\\{}.png".format(self.path, img_name), callback=self.on_exists)
-                print(filename)
-                return filename
+            if mode == 'png':
+                with mss.mss() as sct:
+                    sct.shot(output="{}\\{}.png".format(self.path, img_name), callback=self.on_exists)
+            elif mode == 'jpg':
+                im = PIL.ImageGrab.grab()
+                im.save("{}\\{}.jpg".format(self.path, img_name))
         except AttributeError:  # self.path wasn't set because Screencapture's path is invalid.
             print('Cannot take screenshot because path is invalid.')

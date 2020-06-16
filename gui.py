@@ -756,9 +756,8 @@ class second_window(tk.Toplevel):
         self.cid = self.line_fig.canvas.mpl_connect('button_press_event', self.on_click)
 
     def on_click(self, event):
-        # Usable variables: event.artist, event.button, event.x, event.y, event.xdata, event.ydata, event.ind
         time = event.xdata
-        img_name = str(self.closest_datapoint(time)) + '.png'
+        img_name = str(self.closest_datapoint(time)) + '.jpg'  # Should be made an argument somehow.
         if img_name in self.image_cache:
             img = self.image_cache[img_name]
         else:
