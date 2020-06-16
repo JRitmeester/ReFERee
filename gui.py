@@ -78,9 +78,9 @@ class overlay_window(tk.Toplevel):
         self.emotion_images_tk = {emotion: ImageTk.PhotoImage(img) \
                                   for emotion, img in self.emotion_img_ref.items()}  # These can be used.
 
-        self.webcam_img = tk.Label(self)
-        self.webcam_img.place(x=0, y=0, width=100, height=100)
-        self.webcam_img.configure(bg='#eeeeee', bd=0, padx=10, pady=10)
+        # self.webcam_img = tk.Label(self)
+        # self.webcam_img.place(x=0, y=0, width=100, height=100)
+        # self.webcam_img.configure(bg='#eeeeee', bd=0, padx=10, pady=10)
 
         self.emotion_text = tk.Label(self)
         self.emotion_text.place(x=0, y=100, width=100, height=40)
@@ -115,10 +115,10 @@ class overlay_window(tk.Toplevel):
             return
 
         emotion = shared.current_emotion
-        webcam = shared.webcam_image
-        if webcam is not None:
+        # webcam = shared.webcam_image
+        # if webcam is not None:
             # It would be best to resize the output to fit, but PIL is bugged.
-            self.webcam_img.configure(image=shared.webcam_image)
+            # self.webcam_img.configure(image=shared.webcam_image)
         if emotion is not None:
             self.emotion_text.configure(image=self.emotion_images_tk[emotion])
         self.cancel = self.after(500, self.update_overlay)

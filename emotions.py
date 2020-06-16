@@ -26,31 +26,6 @@ class EmotionRecogniser(threading.Thread):
         self.mode = "display"
 
     def run(self):
-        train_dir = 'data/train'
-        val_dir = 'data/test'
-
-        self.num_train = 28709
-        self.num_val = 7178
-        self.batch_size = 64
-        self.num_epoch = 50
-
-        train_datagen = ImageDataGenerator(rescale=1./255)
-        val_datagen = ImageDataGenerator(rescale=1./255)
-
-        train_generator = train_datagen.flow_from_directory(
-            train_dir,
-            target_size=(48,48),
-            batch_size=self.batch_size,
-            color_mode="grayscale",
-            class_mode='categorical')
-
-        validation_generator = val_datagen.flow_from_directory(
-            val_dir,
-            target_size=(48,48),
-            batch_size=self.batch_size,
-            color_mode="grayscale",
-            class_mode='categorical')
-
         # Create the model
         self.model = Sequential()
 
@@ -72,6 +47,30 @@ class EmotionRecogniser(threading.Thread):
 
         # If you want to train the same model or try other models, go for this
         if self.mode == "train":
+            train_dir = 'data/train'
+            val_dir = 'data/test'
+
+            self.num_train = 28709
+            self.num_val = 7178
+            self.batch_size = 64
+            self.num_epoch = 50
+
+            self.train_datagen = ImageDataGenerator(rescale=1. / 255)
+            self.val_datagen = ImageDataGenerator(rescale=1. / 255)
+
+            self.train_generator = train_datagen.flow_from_directory(
+                train_dir,
+                target_size=(48, 48),
+                batch_size=self.batch_size,
+                color_mode="grayscale",
+                class_mode='categorical')
+
+            self.validation_generator = val_datagen.flow_from_directory(
+                val_dir,
+                target_size=(48, 48),
+                batch_size=self.batch_size,
+                color_mode="grayscale",
+                class_mode='categorical')
             self.train()
         elif self.mode == "display":
             self.model.load_weights('model.h5')
